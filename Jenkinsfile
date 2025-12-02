@@ -14,28 +14,28 @@ pipeline
     {
       steps
       {
-        echo:"From Git pipeline started!"
+        echo "From Git pipeline started!"
       }
     }
     stage('Two')
     {
       steps
       {
-        echo:"From Git pipeline completed!"
+        echo "From Git pipeline completed!"
       }
     }
     stage('Three')
     {
       steps
       {
-        echo:"Compiling source code"
+        echo "Compiling source code"
       }
     }
     stage('Four')
     {
       steps
       {
-        echo:"Running Unit test"
+        echo "Running Unit test"
       }
     }
   }
