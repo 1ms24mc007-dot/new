@@ -29,6 +29,7 @@ pipeline
       steps
       {
         echo "Compiling source code"
+        sh "javac Program.java"
       }
     }
     stage('Four')
@@ -36,6 +37,7 @@ pipeline
       steps
       {
         echo "Running Unit test"
+        sh "java Program"
       }
     }
   }
