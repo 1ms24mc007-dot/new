@@ -3,29 +3,38 @@ pipeline
   agent any
   stages
   {
-    stage{
-      steps{
+    stage('Git')
+    {
+      steps
+      {
         git checkout scm
       }
     }
-    stage{
-      steps{
+    stage('One')
+    {
+      steps
+      {
         echo:"From Git pipeline started!"
       }
     }
-
-    stage{
-      steps{
+    stage('Two')
+    {
+      steps
+      {
         echo:"From Git pipeline completed!"
       }
     }
-    stage{
-      steps{
+    stage('Three')
+    {
+      steps
+      {
         echo:"Compiling source code"
       }
     }
-    stage{
-      steps{
+    stage('Four')
+    {
+      steps
+      {
         echo:"Running Unit test"
       }
     }
