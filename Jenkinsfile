@@ -7,7 +7,7 @@ pipeline
     {
       steps
       {
-        git checkout scm
+        git branch:'main',url:'https://github.com/1ms24mc007-dot/new'
       }
     }
     stage('One')
