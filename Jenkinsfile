@@ -29,6 +29,7 @@ pipeline
       steps
       {
         echo "Compiling source code"
+        sh "sudo apt install java"
         sh "javac Program.java"
       }
     }
