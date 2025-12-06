@@ -36,6 +36,7 @@ pipeline
       steps
       {
         echo "Running Unit test"
+        sh "python3 hello.py"
       }
     }
   }
