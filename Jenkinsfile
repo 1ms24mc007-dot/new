@@ -1,6 +1,10 @@
 pipeline
 {
   agent any
+  triggers
+  {
+    CRON '* * * * *'
+  }
   stages
   {
     stage('Git')
