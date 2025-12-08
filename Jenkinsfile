@@ -3,7 +3,7 @@ pipeline
   agent any
   triggers
   {
-    CRON '* * * * *'
+    pollSCM('H/* * * * *')
   }
   stages
   {
