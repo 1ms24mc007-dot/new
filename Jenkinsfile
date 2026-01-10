@@ -11,7 +11,7 @@ pipeline {
 
         stage('Checkout Code') {
             steps {
-                git branch: 'master',
+                git branch: 'main',
                     url: 'https://github.com/1ms24mc007-dot/new' // Replace with your repo
             }
         }
