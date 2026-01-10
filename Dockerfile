@@ -1,11 +1,13 @@
-FROM tomcat:9-jdk11
+# Use OpenJDK image
+FROM openjdk:21-jdk-slim
 
-# Remove default apps
-RUN rm -rf /usr/local/tomcat/webapps/*
+WORKDIR /app
 
-# Copy WAR file
-COPY target/simple-webapp.war /usr/local/tomcat/webapps/ROOT.war
+# Copy Java program
+COPY Program.java .
 
-EXPOSE 8080
+# Compile Java program
+RUN javac Program.java
 
-CMD ["catalina.sh", "run"]
+# Run the program by default
+CMD ["java", "Program"]
