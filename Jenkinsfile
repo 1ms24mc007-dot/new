@@ -2,64 +2,55 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = "anant1408/java-app"
-        DOCKER_TAG = "latest"
-        DOCKER_CREDENTIALS_ID = "dockerhub-creds" // Add in Jenkins credentials
+        DOCKER_IMAGE = "anant1408/simple-webapp"
+        DOCKER_TAG = "v1"
     }
 
     stages {
 
         stage('Checkout Code') {
             steps {
-                git branch: 'main',
-                    url: 'https://github.com/1ms24mc007-dot/new' // Replace with your repo
+                checkout scm
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                script {
-                    docker.build("${DOCKER_IMAGE}:${DOCKER_TAG}")
-                }
+                sh '''
+                docker build -t $DOCKER_IMAGE:$DOCKER_TAG .
+                '''
             }
         }
 
-        stage('Login to Docker Hub') {
+        stage('Docker Login') {
             steps {
-                script {
-                    docker.withRegistry('', DOCKER_CREDENTIALS_ID) {
-                        echo "Logged in to Docker Hub"
-                    }
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub-creds',
+                    usernameVariable: 'DOCKER_USER',
+                    passwordVariable: 'DOCKER_PASS'
+                )]) {
+                    sh '''
+                    echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+                    '''
                 }
             }
         }
 
-        stage('Push Docker Image') {
+        stage('Push Image to Docker Hub') {
             steps {
-                script {
-                    docker.withRegistry('', DOCKER_CREDENTIALS_ID) {
-                        docker.image("${DOCKER_IMAGE}:${DOCKER_TAG}").push()
-                    }
-                }
+                sh '''
+                docker push $DOCKER_IMAGE:$DOCKER_TAG
+                '''
             }
         }
-
-        stage('Test Docker Image') {
-            steps {
-                script {
-                    sh "docker run --rm ${DOCKER_IMAGE}:${DOCKER_TAG}"
-                }
-            }
-        }
-
     }
 
     post {
         success {
-            echo "Docker image pushed successfully!"
+            echo "Docker image pushed successfully"
         }
         failure {
-            echo "Pipeline failed"
+            echo "Build or push failed"
         }
     }
 }
