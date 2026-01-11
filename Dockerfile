@@ -1,13 +1,12 @@
-# Use OpenJDK image
-FROM eclipse-temurin:21-jdk
+FROM python:3.10-slim
 
 WORKDIR /app
 
-# Copy Java program
-COPY Program.java .
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Compile Java program
-RUN javac Program.java
+COPY . .
 
-# Run the program by default
-CMD ["java", "Program"]
+EXPOSE 5000
+
+CMD ["python", "app.py"]
