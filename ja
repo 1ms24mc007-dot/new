@@ -2,3 +2,24 @@ FROM openjdk:11-jre-slim
 WORKDIR /app
 COPY target/demo-app-1.0-SNAPSHOT.jar app.jar
 ENTRYPOINT ["java","-jar","app.jar"]
+
+App.java
+package com.example;
+
+import java.io.OutputStream;
+import com.sun.net.httpserver.HttpServer;
+import java.net.InetSocketAddress;
+
+public class App {
+    public static void main(String[] args) throws Exception {
+        HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
+        server.createContext("/", exchange -> {
+            String response = "Hello from Jenkins + Docker + Kubernetes!";
+            exchange.sendResponseHeaders(200, response.length());
+            OutputStream os = exchange.getResponseBody();
+            os.write(response.getBytes());
+            os.close();
+        });
+        server.start();
+    }
+}
