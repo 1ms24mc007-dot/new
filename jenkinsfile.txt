@@ -1,0 +1,33 @@
+pipeline{
+    agent any
+        stages{
+            stage('git'){
+                steps{
+                  git branch:'main',url:'https://github.com/1ms24mc007-dot/react'  
+                }
+            }
+            stage('Build'){
+                steps{
+                    sh 'docker build -t anant1408/react:latest .'
+                }
+            }
+            stage('login'){
+                steps{
+                    withCredentials([usernamePassword(
+                        credentialsId:'dockerhub-creds',
+                        usernameVariable:'DOCKER_USER',
+                        passwordVariable:'DOCKER_PASS'
+                        )]){
+                            sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
+                        }
+                }
+            }
+            stage('push'){
+                steps{
+                    sh 'docker push anant1408/react:latest'
+                }
+            }
+            
+        
+    }
+}
